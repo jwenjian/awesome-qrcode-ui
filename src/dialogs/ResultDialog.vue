@@ -110,7 +110,7 @@ export default {
 
       let now = new Date()
 
-      let filename = `awesome-qrcode_${now.getFullYear()}_${now.getMonth()}_${now.getDate()}_${now.getHours()}_${now.getMinutes()}_${now.getSeconds()}${fileSuffix}`
+      let filename = `awesome-qrcode_${now.getFullYear()}_${now.getMonth() + 1}_${now.getDate()}_${now.getHours()}_${now.getMinutes()}_${now.getSeconds()}${fileSuffix}`
 
       this.saveAsImg(filename, this.qrcode.url)
     },
