@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h3>
-      Text QR Code Generator
-    </h3>
+    <h3>Text QR Code Generator</h3>
 
     <el-row>
       <el-col :span="14">
@@ -14,16 +12,11 @@
           :rules="formRule"
           size="small"
         >
-          <el-form-item label="Text" prop="text">
-            <el-tooltip placement="right">
-              <div slot="content">
-                <p><b>Supported Characters:</b></p>
-                <p>1. Numbers: 0-9</p>
-                <p>2. Letters: a-z, A-Z</p>
-                <p>3. Common punctuations: · , . : ; + - * / \ ~ ! @ # $ % ^ &amp; ` ' = &lt; > [ ] ( ) ? _ { } | and  (space) </p>
-              </div>
-              <el-input v-model="formModel.text"></el-input>
-            </el-tooltip>
+          <el-form-item prop="text">
+            <template slot="label">
+              <TextFiledLabel />
+            </template>
+            <el-input v-model="formModel.text"></el-input>
           </el-form-item>
         </el-form>
         <el-button type="primary" @click="generate">Generate</el-button>
@@ -35,10 +28,12 @@
 
 <script>
 import ResultDialog from "../../dialogs/ResultDialog";
+import TextFiledLabel from "../../components/TextFieldLabel";
 
 export default {
   components: {
-    ResultDialog
+    ResultDialog,
+    TextFiledLabel
   },
   data() {
     return {
@@ -65,7 +60,7 @@ export default {
     },
     onResultDialogClose() {
       // reset form field
-      this.formModel.text = null
+      this.formModel.text = null;
     }
   }
 };

@@ -11,43 +11,31 @@
           :rules="formRule"
           size="small"
         >
-          <el-form-item label="Text" prop="text">
-            <el-tooltip placement="right">
-              <div slot="content">
-                <p>
-                  <b>Supported Characters:</b>
-                </p>
-                <p>1. Numbers: 0-9</p>
-                <p>2. Letters: a-z, A-Z</p>
-                <p>3. Common punctuations: · , . : ; + - * / \ ~ ! @ # $ % ^ &amp; ` ' = &lt; > [ ] ( ) ? _ { } | and (space)</p>
-              </div>
-              <el-input v-model="formModel.text"></el-input>
-            </el-tooltip>
+          <el-form-item prop="text">
+            <template slot="label">
+              <TextFiledLabel />
+            </template>
+            <el-input v-model="formModel.text"></el-input>
           </el-form-item>
           <el-form-item label="Background Gif Picture" prop="picFile">
-            <el-tooltip placement="right">
-              <div slot="content">
-                <p>1. Required.</p>
-                <p>2. Must select a .gif file</p>
+            <el-upload
+              drag
+              :auto-upload="false"
+              action="/qrcode/gif"
+              :on-change="onFileChange"
+              accept="image/gif"
+              list-type="picture"
+              :file-list="picFileList"
+              ref="gif-upload"
+              :limit="1"
+            >
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                Drop your image file here，or
+                <em>Click to upload</em>
               </div>
-              <el-upload
-                drag
-                :auto-upload="false"
-                action="/qrcode/gif"
-                :on-change="onFileChange"
-                accept="image/gif"
-                list-type="picture"
-                :file-list="picFileList"
-                ref="gif-upload"
-              >
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">
-                  Drop your image file here，or
-                  <em>Click to upload</em>
-                </div>
-                <div class="el-upload__tip" slot="tip">Only .gif file supported!</div>
-              </el-upload>
-            </el-tooltip>
+              <div class="el-upload__tip" slot="tip">Only .gif file supported!</div>
+            </el-upload>
           </el-form-item>
         </el-form>
       </el-col>
@@ -59,10 +47,12 @@
 
 <script>
 import ResultDialog from "../../dialogs/ResultDialog";
+import TextFiledLabel from "../../components/TextFieldLabel";
 
 export default {
   components: {
-    ResultDialog
+    ResultDialog,
+    TextFiledLabel
   },
   data() {
     return {
@@ -89,9 +79,9 @@ export default {
           return;
         }
 
-        let data = new FormData()
-        data.append("text", this.formModel.text)
-        data.append("file", this.formModel.picFile.raw)
+        let data = new FormData();
+        data.append("text", this.formModel.text);
+        data.append("file", this.formModel.picFile.raw);
 
         this.$refs["result-dialog"].showGif(data);
       });
@@ -100,16 +90,16 @@ export default {
       // reset form field
       this.formModel.text = null;
       this.formModel.picFile = null;
-      this.picFileList = []
-      this.$refs['gif-upload'].clearFiles()
+      this.picFileList = [];
+      this.$refs["gif-upload"].clearFiles();
     },
     onFileChange(file, fileList) {
       if (!fileList) {
-        this.formModel.picFile = null
+        this.formModel.picFile = null;
       }
       if (file) {
         this.formModel.picFile = file;
-        this.$refs['gif-form'].validateField('picFile')
+        this.$refs["gif-form"].validateField("picFile");
       } else {
         this.formModel.picFile = null;
       }
